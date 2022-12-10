@@ -9,15 +9,10 @@ def getSignalStrength(at_cycle, instructions: list[str]):
         if wait_time == 0:
             x += x_change
             x_change = 0
-            parts = instructions[index].split()
-            opcode = parts[0]
-            if len(parts) > 1:
-                value = parts[1]
-            if opcode == 'noop':
-                pass
-            elif opcode == 'addx':
-                wait_time = 1
-                x_change = int(value)
+            match instructions[index].split():
+                case ['addx', n]:
+                    wait_time = 1
+                    x_change = int(n)
             index += 1
         else:
             wait_time -= 1
