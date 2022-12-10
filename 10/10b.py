@@ -30,7 +30,7 @@ def main():
         crt_pos += 1
         crt_pos %= 40
         if crt_pos == 0:
-            print('\n', end='')
+            print()
 
 if __name__ == "__main__":
     main()
