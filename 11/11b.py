@@ -30,6 +30,7 @@ def main():
 
     monkeys: list[Monkey] = []
     throw_list = []
+    cycle_length = 1
     for line in input_lines:
         match line.split():
             case ['Starting', 'items:', *i]:
@@ -38,16 +39,13 @@ def main():
                 operation = ' '.join(o)
             case ['Test:', 'divisible', 'by', t]:
                 test = int(t)
+                cycle_length *= test
             case ['If', 'true:', 'throw', 'to', 'monkey', tt]:
                 throw_list.append(int(tt))
             case ['If', 'false:', 'throw', 'to', 'monkey', tt]:
                 throw_list.append(int(tt))
                 monkeys.append(Monkey(items, operation, test, throw_list))
                 throw_list = []
-
-    cycle_length = 1
-    for m in monkeys:
-        cycle_length *= m.test
 
     for m in monkeys:
         m.cycle_length = cycle_length
