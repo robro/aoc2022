@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import string
 from operator import add
 
 def getNeighbors(node, grid):
