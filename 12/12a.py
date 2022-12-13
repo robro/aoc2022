@@ -2,9 +2,7 @@
 import string
 from operator import add
 
-def getNeighbors(node, heights):
-    width = len(heights[0])
-    height = len(heights)
+def getNeighbors(node, grid):
     x1, y1 = node
     neighbor_offsets = [
         (0, 1),
@@ -15,9 +13,11 @@ def getNeighbors(node, heights):
     neighbors = []
     for offset in neighbor_offsets:
         x2, y2 = tuple(map(add, node, offset))
-        if x2 < 0 or y2 < 0 or x2 >= width or y2 >= height:
+        if x2 < 0 or y2 < 0:
             continue
-        if heights[y2][x2] > heights[y1][x1]+1:
+        if x2 >= len(grid[0]) or y2 >= len(grid):
+            continue
+        if ord(grid[y2][x2]) - ord(grid[y1][x1]) > 1:
             continue
         neighbors.append((x2, y2))
     return neighbors
@@ -26,18 +26,17 @@ def main():
     with open('puzzle_input.txt', 'r') as f:
         input_lines = f.read().splitlines()
 
-    for x in range(len(input_lines[0])):
-        for y in range(len(input_lines)):
-            node = (x, y)
-            if input_lines[y][x] == 'S':
-                start_node = node
-            elif input_lines[y][x] == 'E':
-                end_node = node
+    grid = [[char for char in line] for line in input_lines]
 
-    height_map = {k: v for v, k in enumerate(string.ascii_lowercase)}
-    height_map['S'] = 0
-    height_map['E'] = 25
-    heights = [[height_map[char] for char in line] for line in input_lines]
+    for x in range(len(grid[0])):
+        for y in range(len(grid)):
+            node = (x, y)
+            if grid[y][x] == 'S':
+                start_node = node
+                grid[y][x] = 'a'
+            elif grid[y][x] == 'E':
+                end_node = node
+                grid[y][x] = 'z'
 
     queue = [start_node]
     explored = [start_node]
@@ -60,7 +59,7 @@ def main():
             print()
             print('Steps:', len(steps))
             return
-        for adj_node in getNeighbors(cur_node, heights):
+        for adj_node in getNeighbors(cur_node, grid):
             if adj_node not in explored:
                 explored.append(adj_node)
                 queue.append(adj_node)
