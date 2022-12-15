@@ -37,7 +37,7 @@ def main():
         for sensor2 in sensors:
             if sensor1 is sensor2:
                 continue
-            if sensor2 in group or sensor1 in group:
+            if sensor2 in group:
                 continue
             distance = sensor1.getDist(sensor2.x, sensor2.y)
             if distance == sensor1.b_dist + sensor2.b_dist + 2:
