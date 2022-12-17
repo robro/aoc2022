@@ -12,11 +12,10 @@ class Valve:
 valves: dict[str, Valve] = {}
 time_limit = 30
 start_id = 'AA'
-most_release = 0
 
 def find_release(valve_list: list[Valve], parent: Valve, time=time_limit, release=0):
     new_release = release
-    global most_release
+    max_release = new_release
     for valve in valve_list:
         sub_list = list(valve_list)
         sub_list.remove(valve)
@@ -24,8 +23,8 @@ def find_release(valve_list: list[Valve], parent: Valve, time=time_limit, releas
         if new_time > 0:
             new_release = release + (valve.flow_rate * new_time)
             new_release = find_release(sub_list, valve, new_time, new_release)
-        most_release = max(most_release, new_release)
-    return new_release
+        max_release = max(max_release, new_release)
+    return max_release
 
 def main():
     with open('puzzle_input.txt', 'r') as f:
@@ -63,8 +62,8 @@ def main():
                         queue.append(neighbor)
 
     # Release me!
-    find_release(flow_valves, root_valve)
-    print('Most pressure possible to release:', most_release)
+    max_release = find_release(flow_valves, root_valve)
+    print('Most pressure possible to release:', max_release)
 
 if __name__ == "__main__":
     start = time()
