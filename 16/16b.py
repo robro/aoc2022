@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from time import time
+from itertools import combinations
 
 class Valve:
     def __init__(self, id, flow_rate, neighbors):
@@ -9,7 +10,7 @@ class Valve:
         self.parent = None
         self.dist_to: dict[Valve, int] = {}
 
-time_limit = 30
+time_limit = 26
 start_id = 'AA'
 
 def find_release(valve_list: list[Valve], parent: Valve, time=time_limit, release=0):
@@ -22,7 +23,7 @@ def find_release(valve_list: list[Valve], parent: Valve, time=time_limit, releas
         if new_time > 0:
             new_release = release + (valve.flow_rate * new_time)
             new_release = find_release(sub_list, valve, new_time, new_release)
-        max_release = max(max_release, new_release)
+            max_release = max(max_release, new_release)
     return max_release
 
 def main():
@@ -61,8 +62,14 @@ def main():
                         tested.append(neighbor)
                         queue.append(neighbor)
 
-    # Release me!
-    max_release = find_release(flow_valves, root_valve)
+    max_release = 0
+    max_valves_per = len(flow_valves) // 2
+    for valves_combo_1 in combinations(flow_valves, max_valves_per):
+        combo_release_1 = find_release(list(valves_combo_1), root_valve)
+        valves_combo_2 = [v for v in flow_valves if not v in valves_combo_1]
+        combo_release_2 = find_release(valves_combo_2, root_valve)
+        max_release = max(max_release, combo_release_1 + combo_release_2)
+
     print('Most pressure possible to release:', max_release)
 
 if __name__ == "__main__":
