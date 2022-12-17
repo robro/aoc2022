@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from time import time
 
 class Valve:
     def __init__(self, id, flow_rate, neighbors):
@@ -66,4 +67,7 @@ def main():
     print('Most pressure possible to release:', most_release)
 
 if __name__ == "__main__":
+    start = time()
     main()
+    end = time()
+    print(round((end - start) * 1000, 2), 'ms')
