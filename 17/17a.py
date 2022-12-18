@@ -84,7 +84,7 @@ def add_to_tower():
     global f_rock
     global rock_count
     global tower_array
-    # Extend tower array to fit the rock if neccessary
+    # Extend tower array to fit new rock if neccessary
     tower_array += [
         [0]*cave_width for _ in range((f_rock.y+1) - len(tower_array))]
     # Add rock tiles to tower array
@@ -117,8 +117,8 @@ def draw_scene(draw_height=10):
     print()
 
 def main():
-    global rock_count
     global f_rock
+    global rock_count
     global tower_array
 
     with open('puzzle_input.txt', 'r') as f:
@@ -139,10 +139,10 @@ def main():
                         f_rock.move_right()
                 f_rock.pushed = True
             else:
-                if not f_rock.fall_down():
-                    add_to_tower()
-                else:
+                if f_rock.fall_down():
                     f_rock.pushed = False
+                else:
+                    add_to_tower()
     draw_scene()
     print('Tower height:', len(tower_array))
 
