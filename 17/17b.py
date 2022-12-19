@@ -30,7 +30,6 @@ shape_tiles = {
         [1,1],
         [1,1]]
 }
-bar_count = 0
 
 class Rock:
     def __init__(self, x, y, shape, tiles):
