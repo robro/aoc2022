@@ -191,9 +191,9 @@ def main():
             tower_height = get_tower_height(test_rocks, input_str) + \
                 (((total_rocks - nonloop_rocks) // rocks_per_loop) * loop_height)
 
-        print('Rocks tested:', rocks_tested)
-        print('Loop starts at:', nonloop_rocks, 'rocks')
-        print('Loop length:', rocks_per_loop, 'rocks')
+            print('Rocks tested:', rocks_tested)
+            print('Loop starts at:', nonloop_rocks, 'rocks')
+            print('Loop length:', rocks_per_loop, 'rocks')
 
     print('Total rocks:', total_rocks)
     print('Tower height:', tower_height)
