@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 from time import time
 
-def get_shifted_index(start_index, index_shift, seq_length):
-    shifted_index = start_index + index_shift
-    mod_value = seq_length-1
-    if shifted_index == 0:
-        return mod_value
-    return shifted_index % mod_value
-
 def main():
     with open('puzzle_input.txt', 'r') as f:
         input_lines = f.read().splitlines()
@@ -25,9 +18,8 @@ def main():
         if start_index is None:
             print('Value not found:', index_shift)
             return -1
-        shifted_index = get_shifted_index(start_index, index_shift, seq_length)
+        shifted_index = (start_index + index_shift) % (seq_length-1)
         paired_list.insert(shifted_index, paired_list.pop(start_index))
-        # print([pair[1] for pair in paired_list])
 
     mixed_int_list = [pair[1] for pair in paired_list]
     zero_index = mixed_int_list.index(0)

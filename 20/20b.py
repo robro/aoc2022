@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 from time import time
 
-def get_shifted_index(start_index, index_shift, seq_length):
-    shifted_index = start_index + index_shift
-    mod_value = seq_length-1
-    if shifted_index == 0 and index_shift != 0:
-        return mod_value
-    return shifted_index % mod_value
-
 def shift_list(paired_list: list[tuple]):
     seq_length = len(paired_list)
     for i in range(seq_length):
@@ -20,7 +13,7 @@ def shift_list(paired_list: list[tuple]):
         if start_index is None:
             print('Value not found:', index_shift)
             return -1
-        shifted_index = get_shifted_index(start_index, index_shift, seq_length)
+        shifted_index = (start_index + index_shift) % (seq_length-1)
         paired_list.insert(shifted_index, paired_list.pop(start_index))
 
 def main():
