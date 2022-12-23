@@ -88,9 +88,8 @@ def get_new_coord(cube, coord, facing):
     new_coord[1:] += facing_offset[facing]
     if not ((new_coord[1:] >= 0) & (new_coord[1:] < cube.shape[1])).all():
         new_coord[0], new_facing = edge_map[str(coord[0])+str(facing)]
-        new_coord[1], new_coord[2] = get_rotated(
-            new_coord[1:], radians(((new_facing - facing)%4)*90), 
-            cube.shape[1])
+        new_coord[1:] = get_rotated(
+            new_coord[1:], radians(((new_facing - facing)%4)*90), cube.shape[1])
     if cube[new_coord[0]][tuple(new_coord[1:])] == '#':
         return coord, facing
     return new_coord, new_facing

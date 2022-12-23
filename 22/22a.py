@@ -57,6 +57,7 @@ def main():
             num_str = ''
             continue
         num_str += char
+    instruct_list.append(int(num_str))
 
     path = []
     # Get starting state
