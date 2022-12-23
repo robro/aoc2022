@@ -66,7 +66,6 @@ def draw_scene(elves: list['Elf'], bounds, round_num):
     print()
 
 def main():
-    global elves
     with open('23/puzzle_input.txt', 'r') as f:
         input_lines = f.read().splitlines()
 
