@@ -94,7 +94,6 @@ def main():
         for elf in elves:
             if elf.is_alone(elves):
                 continue
-            need_to_move = True
             elf.propose_move(elves, proposals, positions, check_order)
 
         # Second half of round - The Move
