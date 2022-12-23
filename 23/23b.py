@@ -38,9 +38,7 @@ def propose_move(elf, elves: dict, proposals, check_directions):
         else:
             if not proposal:
                 proposal = tuple(check_positions[1])
-    if is_alone:
-        return False
-    if not proposal:
+    if is_alone or not proposal:
         return False
     proposals[proposal].append(elf)
     return True
@@ -52,8 +50,6 @@ def main():
     elves = {(x, y): True for y, line in enumerate(input_lines)
              for x, char in enumerate(line)
              if char == '#'}
-
-    num_of_elves = len(elves)
     proposals = defaultdict(list)
     check_directions = np.array([
         [[-1,-1],[ 0,-1],[ 1,-1]], # North
