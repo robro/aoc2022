@@ -29,10 +29,8 @@ def decimal_to_snafu(decimal):
 
 def snafu_to_decimal(string):
     decimal = 0
-    place = len(string)-1
-    for s in string:
-        decimal += S_MAP.get(s) * (5**place)
-        place -= 1
+    for p, s in enumerate(string[::-1]):
+        decimal += S_MAP.get(s) * (5**p)
     return decimal
 
 def main():
