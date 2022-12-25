@@ -20,12 +20,12 @@ def decimal_to_snafu(decimal):
     snafu = ''
     while True:
         s = decimal % 5
-        if s > 2: s -= 5
+        if s > 2:
+            s -= 5
         snafu = D_MAP.get(s) + snafu
-        s = (decimal - s) // 5
-        if s == 0: break
-        decimal = s
-    return snafu
+        decimal = (decimal - s) // 5
+        if decimal == 0:
+            return snafu
 
 def snafu_to_decimal(string):
     decimal = 0
