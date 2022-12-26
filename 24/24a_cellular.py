@@ -12,7 +12,6 @@ cell_state = {
 }
 
 parse_map = {
-    'E': cell_state['ELF'],
     '^': cell_state['UP'],
     '>': cell_state['RIGHT'],
     'v': cell_state['DOWN'],
