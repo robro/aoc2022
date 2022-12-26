@@ -1,36 +1,34 @@
 #!/usr/bin/env python
 import os
-from time import perf_counter
 import numpy as np
+from time import perf_counter
 
-cell_state = {
-    'ELF': int('10000', 2),
-    'UP': int('01000', 2),
-    'RIGHT': int('00100', 2),
-    'DOWN': int('00010', 2),
-    'LEFT': int('00001', 2)
-}
+STATE_ELF = 16
+STATE_UP = 8
+STATE_RIGHT = 4
+STATE_DOWN = 2
+STATE_LEFT = 1
 
 parse_map = {
-    '^': cell_state['UP'],
-    '>': cell_state['RIGHT'],
-    'v': cell_state['DOWN'],
-    '<': cell_state['LEFT'],
-    '.': 0
+    '^': STATE_UP,
+    '>': STATE_RIGHT,
+    'v': STATE_DOWN,
+    '<': STATE_LEFT,
+    '.': 0,
 }
 draw_map = {
-    cell_state['ELF']: 'E',
-    cell_state['UP']: '^',
-    cell_state['RIGHT']: '>',
-    cell_state['DOWN']: 'v',
-    cell_state['LEFT']: '<',
-    0: '.'
+    STATE_ELF: 'E',
+    STATE_UP: '^',
+    STATE_RIGHT: '>',
+    STATE_DOWN: 'v',
+    STATE_LEFT: '<',
+    0: '.',
 }
 neighbors = {
-    ( 0,-1): cell_state['DOWN'],
-    ( 1, 0): cell_state['LEFT'],
-    ( 0, 1): cell_state['UP'],
-    (-1, 0): cell_state['RIGHT']
+    ( 0,-1): STATE_DOWN,
+    ( 1, 0): STATE_LEFT,
+    ( 0, 1): STATE_UP,
+    (-1, 0): STATE_RIGHT,
 }
 
 def draw_scene(generation: dict, dimensions) -> None:
@@ -54,16 +52,12 @@ def new_generation(generation: dict, dimensions) -> dict:
     for cell in generation:
         new_generation[cell] = 0
         for offset, state in neighbors.items():
-            if generation.get(tuple((np.array(cell) + offset) % dimensions)) & state:
-                new_generation[cell] |= state
-        if new_generation[cell] > 0:
-            continue
-        if generation[cell] == cell_state['ELF']:
-            new_generation[cell] = cell_state['ELF']
-            continue
-        for offset in neighbors:
-            if generation.get(tuple((np.array(cell) + offset))) == cell_state['ELF']:
-                new_generation[cell] = cell_state['ELF']
+            check_cell = np.array(cell) + offset
+            new_generation[cell] |= generation.get(tuple(check_cell % dimensions), 0) & state
+            new_generation[cell] |= generation.get(tuple(check_cell), 0) & STATE_ELF
+        new_generation[cell] |= generation[cell] & STATE_ELF
+        if new_generation[cell] - STATE_ELF > 0:
+            new_generation[cell] ^= STATE_ELF
 
     return new_generation
 
@@ -81,7 +75,7 @@ def main():
     start_pos = (0, -1)
     end_pos = (width-1, height)
 
-    generation[start_pos] = cell_state['ELF']
+    generation[start_pos] = STATE_ELF
     generation[end_pos] = 0
 
     gen_count = 0
@@ -92,7 +86,7 @@ def main():
             draw_scene(generation, (width, height))
             print('Generations:', gen_count)
             prev_tick = tick
-        if generation.get(end_pos) == cell_state['ELF']:
+        if generation.get(end_pos) == STATE_ELF:
             break
         generation = new_generation(generation, (width, height))
         gen_count += 1
